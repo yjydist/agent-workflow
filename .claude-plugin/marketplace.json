@@ -7,10 +7,10 @@
   },
   "plugins": [
     {
-      "name": "project-spec",
+      "name": "project",
       "description": "Spec-first project workflow for turning ideas into reviewed docs and implementation plans.",
       "category": "development",
-      "source": "./plugins/project-spec"
+      "source": "./plugins/project"
     }
   ]
 }

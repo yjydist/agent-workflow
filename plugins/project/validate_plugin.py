@@ -18,15 +18,15 @@ PROJECT_TYPES = [
     'data-pipeline',
 ]
 REQUIRED_COMMANDS = [
-    'project/new.md',
-    'project/interview.md',
-    'project/generate-docs.md',
-    'project/review-docs.md',
-    'project/freeze-v1.md',
-    'project/plan-implementation.md',
-    'project/ready-for-coding.md',
-    'project/change.md',
-    'project/status.md',
+    'new.md',
+    'interview.md',
+    'generate-docs.md',
+    'review-docs.md',
+    'freeze-v1.md',
+    'plan-implementation.md',
+    'ready-for-coding.md',
+    'change.md',
+    'status.md',
 ]
 STATE_SEQUENCE = 'idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-frozen -> implementation-planned -> ready-for-coding'
 errors: list[str] = []
@@ -58,7 +58,13 @@ manifest_path = ROOT / '.claude-plugin' / 'plugin.json'
 require(manifest_path.exists(), '.claude-plugin/plugin.json missing')
 if manifest_path.exists():
     manifest = json.loads(manifest_path.read_text())
-    require(manifest.get('name') == 'project-spec', 'plugin name must be project-spec')
+    require(manifest.get('name') == 'project', 'plugin name must be project')
+    require(re.fullmatch(r'\d+\.\d+\.\d+', manifest.get('version', '')) is not None, 'plugin version must be semver')
+    author = manifest.get('author')
+    if author is not None:
+        require(isinstance(author, dict), 'plugin author must be an object')
+        if isinstance(author, dict):
+            require(isinstance(author.get('name'), str) and author.get('name'), 'plugin author.name must be set')
 
 for rel in REQUIRED_COMMANDS:
     command_path = ROOT / 'commands' / rel
@@ -71,9 +77,9 @@ for command in sorted((ROOT / 'commands').rglob('*.md')):
     tools = fm.get('allowed-tools', '')
     require('Bash' not in tools, f'{command.relative_to(ROOT)} should not allow unrestricted Bash')
     rel = command.relative_to(ROOT / 'commands')
-    if len(rel.parts) == 2:
-        expected_title = f'# /{rel.parts[0]}:{command.stem}'
-        require(expected_title in command.read_text(), f'{command.relative_to(ROOT)} title must include {expected_title}')
+    require(len(rel.parts) == 1, f'{command.relative_to(ROOT)} must be a flat command file')
+    expected_title = f'# /project:{command.stem}'
+    require(expected_title in command.read_text(), f'{command.relative_to(ROOT)} title must include {expected_title}')
 
 for agent in sorted((ROOT / 'agents').glob('*.md')):
     fm = frontmatter(agent)
@@ -107,18 +113,18 @@ if readme.exists():
     require('V1 status` 必须是 `frozen`' in text, 'docs-template/README.md must gate coding on frozen V1')
     require('blocking open questions' in text, 'docs-template/README.md must gate coding on blocking open questions')
 
-status_command = ROOT / 'commands' / 'project' / 'status.md'
+status_command = ROOT / 'commands' / 'status.md'
 if status_command.exists():
     fm = frontmatter(status_command)
     require(fm.get('allowed-tools') == 'Read', 'project status command must be read-only')
 
-freeze_command = ROOT / 'commands' / 'project' / 'freeze-v1.md'
+freeze_command = ROOT / 'commands' / 'freeze-v1.md'
 if freeze_command.exists():
     text = freeze_command.read_text()
     for needle in ['## Preconditions', '`docs-reviewed`', 'Blocking Issues', 'Blocking V1?', '停止']:
         require(needle in text, f'project freeze command missing gate text: {needle}')
 
-plan_command = ROOT / 'commands' / 'project' / 'plan-implementation.md'
+plan_command = ROOT / 'commands' / 'plan-implementation.md'
 if plan_command.exists():
     text = plan_command.read_text()
     require('implementation-planned' in text, 'project plan command must mention implementation-planned')
@@ -127,18 +133,18 @@ if plan_command.exists():
     for needle in ['## Preconditions', '`v1-frozen`', 'V1 status', 'blocking TODO', 'blocking open question', 'docs/README.md 的 Required Reading Order']:
         require(needle in text, f'project plan command missing gate text: {needle}')
 
-ready_command = ROOT / 'commands' / 'project' / 'ready-for-coding.md'
+ready_command = ROOT / 'commands' / 'ready-for-coding.md'
 if ready_command.exists():
     text = ready_command.read_text()
     for needle in ['# /project:ready-for-coding', '`implementation-planned`', '`ready-for-coding`', 'V1 status', 'Blocking Issues', 'Blocking V1?', '用户确认']:
         require(needle in text, f'project ready command missing readiness text: {needle}')
 
 for command_name, stage in [('new', 'classified'), ('interview', 'interviewed'), ('generate-docs', 'docs-generated'), ('review-docs', 'docs-reviewed'), ('freeze-v1', 'v1-frozen')]:
-    command_path = ROOT / 'commands' / 'project' / f'{command_name}.md'
+    command_path = ROOT / 'commands' / f'{command_name}.md'
     if command_path.exists():
         require(stage in command_path.read_text(), f'project {command_name} command must update stage {stage}')
 
-change_command = ROOT / 'commands' / 'project' / 'change.md'
+change_command = ROOT / 'commands' / 'change.md'
 if change_command.exists():
     text = change_command.read_text()
     for needle in ['Impact analysis', 'Apply change', '用户确认', 'impacted docs', 'implementation-plan.md', 'acceptance-criteria.md']:

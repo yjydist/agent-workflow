@@ -15,7 +15,7 @@ python3 validate_plugin.py
 用绝对路径启动 Claude Code:
 
 ```bash
-claude --plugin-dir /absolute/path/to/project-spec
+claude --plugin-dir /absolute/path/to/project
 ```
 
 进入 Claude Code 后运行:
@@ -30,7 +30,7 @@ claude --plugin-dir /absolute/path/to/project-spec
 
 ```text
 /plugin marketplace add /absolute/path/to/agent-workflow
-/plugin install project-spec@agent-workflow
+/plugin install project@agent-workflow
 /reload-plugins
 ```
 

@@ -6,7 +6,7 @@
 
 | Plugin | Description |
 | --- | --- |
-| `project-spec` | Spec-first project workflow, 提供 `/project:*` commands, agents, skills 和 docs templates. |
+| `project` | Spec-first project workflow, 提供 `/project:*` commands, agents, skills 和 docs templates. |
 
 ## 命名约定
 

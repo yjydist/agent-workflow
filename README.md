@@ -8,7 +8,7 @@
 agent-workflow/
   .claude-plugin/marketplace.json
   plugins/
-    project-spec/
+    project/
       .claude-plugin/plugin.json
       commands/
       agents/
@@ -19,7 +19,7 @@ agent-workflow/
 
 | Plugin | Purpose | Commands |
 | --- | --- | --- |
-| `project-spec` | 把模糊项目想法整理成 reviewed docs 和 implementation plan | `/project:*` |
+| `project` | 把模糊项目想法整理成 reviewed docs 和 implementation plan | `/project:*` |
 
 ## 安装 marketplace
 
@@ -27,7 +27,7 @@ agent-workflow/
 
 ```text
 /plugin marketplace add /absolute/path/to/agent-workflow
-/plugin install project-spec@agent-workflow
+/plugin install project@agent-workflow
 /reload-plugins
 ```
 
@@ -54,7 +54,7 @@ python3 validate_marketplace.py
 验证单个插件:
 
 ```bash
-python3 plugins/project-spec/validate_plugin.py
+python3 plugins/project/validate_plugin.py
 ```
 
 ## 新增插件约定

@@ -1,6 +1,6 @@
 # Starter Prompt
 
-如果已启用 `project-spec` Claude Code plugin, 通常不需要复制本提示. 只需在目标项目运行 `/project:new`, 并提供项目想法.
+如果已启用 `project` Claude Code plugin, 通常不需要复制本提示. 只需在目标项目运行 `/project:new`, 并提供项目想法.
 
 如果需要给 coding agent 增加项目级约束, 可以使用下面这段提示.
 

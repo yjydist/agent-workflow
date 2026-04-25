@@ -1,6 +1,6 @@
 # Workflow Overview
 
-本 workflow 由 `project-spec` Claude Code plugin 提供, 负责把项目从模糊想法推进到可执行规格. 首选方式是在目标项目启用 plugin, 然后运行 `/project:*` 命令.
+本 workflow 由 `project` Claude Code plugin 提供, 负责把项目从模糊想法推进到可执行规格. 首选方式是在目标项目启用 plugin, 然后运行 `/project:*` 命令.
 
 ## 状态机
 
