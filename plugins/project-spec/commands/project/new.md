@@ -1,5 +1,5 @@
 ---
-description: Start a new agent-workflow project and initialize docs skeleton.
+description: Start a new project-spec workflow and initialize docs skeleton.
 argument-hint: <project idea>
 allowed-tools: Read, Write, Edit
 ---

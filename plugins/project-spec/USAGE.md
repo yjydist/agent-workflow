@@ -15,7 +15,7 @@ python3 validate_plugin.py
 用绝对路径启动 Claude Code:
 
 ```bash
-claude --plugin-dir /absolute/path/to/agent-workflow
+claude --plugin-dir /absolute/path/to/project-spec
 ```
 
 进入 Claude Code 后运行:
@@ -26,35 +26,11 @@ claude --plugin-dir /absolute/path/to/agent-workflow
 
 ### 3. 持久安装
 
-持久安装需要先添加 marketplace. 示例目录:
+本插件由仓库根目录的 `agent-workflow` marketplace 分发. 在 Claude Code 中添加 marketplace 并安装插件:
 
 ```text
-my-marketplace/
-  .claude-plugin/marketplace.json
-  plugins/agent-workflow/
-```
-
-`marketplace.json` 示例:
-
-```json
-{
-  "name": "my-local-plugins",
-  "owner": { "name": "Your Name" },
-  "plugins": [
-    {
-      "name": "agent-workflow",
-      "source": "./plugins/agent-workflow",
-      "description": "Workflow plugin for planning project specs before implementation"
-    }
-  ]
-}
-```
-
-在 Claude Code 中安装:
-
-```text
-/plugin marketplace add /absolute/path/to/my-marketplace
-/plugin install agent-workflow@my-local-plugins
+/plugin marketplace add /absolute/path/to/agent-workflow
+/plugin install project-spec@agent-workflow
 /reload-plugins
 ```
 

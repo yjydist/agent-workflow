@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-workflow",
+  "description": "Personal Claude Code marketplace for reusable workflows, commands, agents, and skills.",
+  "owner": {
+    "name": "yjydist"
+  },
+  "plugins": [
+    {
+      "name": "project-spec",
+      "description": "Spec-first project workflow for turning ideas into reviewed docs and implementation plans.",
+      "category": "development",
+      "source": "./plugins/project-spec"
+    }
+  ]
+}

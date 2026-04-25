@@ -58,7 +58,7 @@ manifest_path = ROOT / '.claude-plugin' / 'plugin.json'
 require(manifest_path.exists(), '.claude-plugin/plugin.json missing')
 if manifest_path.exists():
     manifest = json.loads(manifest_path.read_text())
-    require(manifest.get('name') == 'agent-workflow', 'plugin name must be agent-workflow')
+    require(manifest.get('name') == 'project-spec', 'plugin name must be project-spec')
 
 for rel in REQUIRED_COMMANDS:
     command_path = ROOT / 'commands' / rel
