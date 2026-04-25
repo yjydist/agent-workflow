@@ -1,7 +1,7 @@
 ---
 description: Report current workflow state, docs completeness, risks, and next action.
 argument-hint: [status focus]
-allowed-tools: Read, Write, Edit
+allowed-tools: Read
 ---
 
 # /project:status

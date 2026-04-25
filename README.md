@@ -89,6 +89,7 @@ my-marketplace/
 /project:review-docs
 /project:freeze-v1
 /project:plan-implementation
+/project:ready-for-coding
 ```
 
 后续需求变更使用:

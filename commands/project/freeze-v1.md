@@ -17,6 +17,14 @@ allowed-tools: Read, Write, Edit
 - `docs/review/open-questions.md`
 - `docs/meta/decisions.md`
 
+## Preconditions
+
+- `docs/README.md` 当前状态必须是 `docs-reviewed`.
+- `docs/review/review-notes.md` 必须存在.
+- `docs/review/review-notes.md` 的 `Blocking Issues` 必须为空, 或所有条目都标记为 resolved.
+- `docs/review/open-questions.md` 中 `Blocking V1? yes` 的问题必须全部 resolved, 或明确移出 V1.
+- 如果任一条件不满足, 停止, 只报告缺口, 不更新冻结状态.
+
 ## Procedure
 
 1. 确认所有 blocking open questions 已解决或移出 V1.
@@ -24,7 +32,7 @@ allowed-tools: Read, Write, Edit
 3. 将 V1 明确不做功能写入 `docs/product/scope.md`.
 4. 将 V2 候选写入 `docs/product/scope.md`.
 5. 在 `docs/meta/decisions.md` 记录冻结决策.
-6. 更新 `docs/README.md` 当前项目状态.
+6. 更新 `docs/README.md` 当前项目状态为 `v1-frozen`.
 
 ## Frozen Scope Template
 

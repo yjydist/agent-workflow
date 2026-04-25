@@ -34,6 +34,10 @@
 
 ## Coding Rules
 
+- Before writing code, `Current stage` 必须是 `ready-for-coding`.
+- Before writing code, `V1 status` 必须是 `frozen`.
+- Before writing code, review `Blocking Issues` and blocking open questions must be resolved or explicitly moved out of V1.
+- Before writing code, implementation plan must be reviewed and confirmed by the user.
 - Do not implement features outside V1 scope.
 - If docs conflict, stop and report the conflict.
 - If a required behavior is TODO, ask for clarification or move it out of V1.

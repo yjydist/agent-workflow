@@ -41,7 +41,8 @@ allowed-tools: Read, Write, Edit
 3. 如果项目形态不明确,最多问 5 个澄清问题.
 4. 创建 docs 目录骨架.
 5. 初始化 `docs/README.md`,`docs/meta/project-context.md`,`docs/review/open-questions.md`.
-6. 给出下一步建议:运行 `/project:interview`.
+6. 更新 `docs/README.md` 当前状态为 `classified`.
+7. 给出下一步建议:运行 `/project:interview`.
 
 ## Output Requirements
 

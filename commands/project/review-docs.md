@@ -33,8 +33,10 @@ allowed-tools: Read, Write, Edit
    - `docs/review/review-notes.md`
    - `docs/review/risk-list.md`
    - `docs/review/open-questions.md`
-6. 不直接写代码.
-7. 如果建议修改正式文档,必须说明影响范围.
+6. 如果没有 Blocking Issues, 更新 `docs/README.md` 当前状态为 `docs-reviewed`.
+7. 如果存在 Blocking Issues, 保持当前状态, 并说明不能进入 `/project:freeze-v1`.
+8. 不直接写代码.
+9. 如果建议修改正式文档,必须说明影响范围.
 
 ## Review Checklist
 

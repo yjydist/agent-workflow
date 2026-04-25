@@ -40,7 +40,8 @@ allowed-tools: Read, Write, Edit
    - 权限和安全
    - 验收方式
 5. 用户回答后,更新 open questions 状态.
-6. 当信息足够生成初版文档时,建议运行 `/project:generate-docs`.
+6. 当信息足够生成初版文档时,更新 `docs/README.md` 当前状态为 `interviewed`.
+7. 当信息足够生成初版文档时,建议运行 `/project:generate-docs`.
 
 ## Question Priority
 

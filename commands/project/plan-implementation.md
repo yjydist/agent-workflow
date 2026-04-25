@@ -22,14 +22,30 @@ allowed-tools: Read, Write, Edit
 
 ## Required Reads
 
+优先读取 `docs/README.md` 的 Required Reading Order, 即 docs/README.md 的 Required Reading Order. 不维护一份会漂移的独立清单. 至少包含:
+
 - `docs/README.md`
+- `docs/product/overview.md`
 - `docs/product/scope.md`
 - `docs/requirements/functional-requirements.md`
+- `docs/requirements/non-functional-requirements.md`
+- `docs/requirements/business-rules.md`
 - `docs/design/architecture.md`
 - `docs/design/data-design.md`
 - `docs/design/interface-contracts.md`
 - `docs/design/security-and-permissions.md`
+- `docs/design/error-handling.md`
+- `docs/delivery/test-plan.md`
 - `docs/delivery/acceptance-criteria.md`
+
+## Preconditions
+
+- `docs/README.md` 当前状态必须是 `v1-frozen`.
+- `docs/README.md` 的 V1 status 必须是 `frozen`.
+- 不允许 V1 必需行为中存在 blocking TODO.
+- 不允许存在未解决的 blocking review issue.
+- 不允许存在未解决的 blocking open question.
+- 如果任一条件不满足, 停止, 不写 `docs/delivery/implementation-plan.md`.
 
 ## Procedure
 

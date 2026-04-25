@@ -63,12 +63,13 @@ V1 范围已冻结.
 
 可以交给 coding agent 分阶段实现.
 
-目标: `docs/delivery/implementation-plan.md`, 验收标准和 `docs/README.md` 必读顺序均已完整.
+目标: `/project:ready-for-coding` 已确认 `docs/delivery/implementation-plan.md`, 验收标准, review blocking issues, blocking open questions 和 `docs/README.md` 必读顺序均已完整.
 
 ## 关键约束
 
 - 不允许跳过 `/project:review-docs` 直接冻结.
 - 不允许跳过 `/project:freeze-v1` 直接实现.
 - `/project:plan-implementation` 只设置并报告 `implementation-planned`, 可以报告 readiness 缺口, 但不得在同一次执行中更新为 `ready-for-coding`.
+- `/project:ready-for-coding` 是唯一负责从 `implementation-planned` 推进到 `ready-for-coding` 的命令.
 - 所有 TODO 必须在实现前解决, 或者明确标记为 V2 不处理.
 - 每次需求变更必须通过 `/project:change` 写入 `docs/meta/change-log.md` 和 `docs/meta/decisions.md`.

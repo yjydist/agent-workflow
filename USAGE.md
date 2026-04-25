@@ -69,6 +69,7 @@ my-marketplace/
 /project:review-docs
 /project:freeze-v1
 /project:plan-implementation
+/project:ready-for-coding
 /project:change
 /project:status
 ```
@@ -84,6 +85,7 @@ my-marketplace/
 /project:review-docs
 /project:freeze-v1
 /project:plan-implementation
+/project:ready-for-coding
 ```
 
 状态流转:
@@ -92,7 +94,7 @@ my-marketplace/
 idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-frozen -> implementation-planned -> ready-for-coding
 ```
 
-`/project:plan-implementation` 只负责生成实现计划并设置 `implementation-planned`. 用户审阅实现计划, 验收标准和必读文档后, 再明确确认进入 `ready-for-coding`.
+`/project:plan-implementation` 只负责生成实现计划并设置 `implementation-planned`. 用户审阅实现计划, 验收标准和必读文档后, 运行 `/project:ready-for-coding` 进入 `ready-for-coding`.
 
 ## 实现阶段提示
 

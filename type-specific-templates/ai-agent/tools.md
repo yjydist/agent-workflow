@@ -9,3 +9,4 @@
 - Output schema: TODO
 - Side effects: TODO
 - Requires confirmation: yes/no
+- Safety boundary: link to `safety-boundaries.md`

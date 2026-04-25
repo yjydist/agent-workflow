@@ -38,7 +38,8 @@ allowed-tools: Read, Write, Edit
 2. 根据 `docs-template/` 生成或更新 docs.
 3. 根据项目类型生成 `docs/type-specific/<project-type>/` 文档.
 4. 所有不确定内容写为 `TODO`,并同步到 `docs/review/open-questions.md`.
-5. 不生成代码.
+5. 更新 `docs/README.md` 当前状态为 `docs-generated`.
+6. 不生成代码.
 
 ## Required Output Files
 

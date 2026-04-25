@@ -24,6 +24,7 @@ REQUIRED_COMMANDS = [
     'project/review-docs.md',
     'project/freeze-v1.md',
     'project/plan-implementation.md',
+    'project/ready-for-coding.md',
     'project/change.md',
     'project/status.md',
 ]
@@ -102,6 +103,20 @@ readme = ROOT / 'docs-template' / 'README.md'
 if readme.exists():
     text = readme.read_text()
     require('implementation-planned' in text, 'docs-template/README.md must include implementation-planned')
+    require('Current stage` 必须是 `ready-for-coding`' in text, 'docs-template/README.md must gate coding on ready-for-coding')
+    require('V1 status` 必须是 `frozen`' in text, 'docs-template/README.md must gate coding on frozen V1')
+    require('blocking open questions' in text, 'docs-template/README.md must gate coding on blocking open questions')
+
+status_command = ROOT / 'commands' / 'project' / 'status.md'
+if status_command.exists():
+    fm = frontmatter(status_command)
+    require(fm.get('allowed-tools') == 'Read', 'project status command must be read-only')
+
+freeze_command = ROOT / 'commands' / 'project' / 'freeze-v1.md'
+if freeze_command.exists():
+    text = freeze_command.read_text()
+    for needle in ['## Preconditions', '`docs-reviewed`', 'Blocking Issues', 'Blocking V1?', '停止']:
+        require(needle in text, f'project freeze command missing gate text: {needle}')
 
 plan_command = ROOT / 'commands' / 'project' / 'plan-implementation.md'
 if plan_command.exists():
@@ -109,6 +124,32 @@ if plan_command.exists():
     require('implementation-planned' in text, 'project plan command must mention implementation-planned')
     require('ready-for-coding' in text, 'project plan command must mention ready-for-coding')
     require('不要在同一次执行中更新为 `ready-for-coding`' in text, 'project plan command must not auto-advance to ready-for-coding')
+    for needle in ['## Preconditions', '`v1-frozen`', 'V1 status', 'blocking TODO', 'blocking open question', 'docs/README.md 的 Required Reading Order']:
+        require(needle in text, f'project plan command missing gate text: {needle}')
+
+ready_command = ROOT / 'commands' / 'project' / 'ready-for-coding.md'
+if ready_command.exists():
+    text = ready_command.read_text()
+    for needle in ['# /project:ready-for-coding', '`implementation-planned`', '`ready-for-coding`', 'V1 status', 'Blocking Issues', 'Blocking V1?', '用户确认']:
+        require(needle in text, f'project ready command missing readiness text: {needle}')
+
+for command_name, stage in [('new', 'classified'), ('interview', 'interviewed'), ('generate-docs', 'docs-generated'), ('review-docs', 'docs-reviewed'), ('freeze-v1', 'v1-frozen')]:
+    command_path = ROOT / 'commands' / 'project' / f'{command_name}.md'
+    if command_path.exists():
+        require(stage in command_path.read_text(), f'project {command_name} command must update stage {stage}')
+
+change_command = ROOT / 'commands' / 'project' / 'change.md'
+if change_command.exists():
+    text = change_command.read_text()
+    for needle in ['Impact analysis', 'Apply change', '用户确认', 'impacted docs', 'implementation-plan.md', 'acceptance-criteria.md']:
+        require(needle in text, f'project change command missing change workflow text: {needle}')
+
+ai_safety = ROOT / 'type-specific-templates' / 'ai-agent' / 'safety-boundaries.md'
+require(ai_safety.exists(), 'ai-agent safety-boundaries template missing')
+if ai_safety.exists():
+    text = ai_safety.read_text()
+    for needle in ['禁止任意 shell', '删除文件', '外部写操作', 'secrets', '不得自行扩大工具权限']:
+        require(needle in text, f'ai-agent safety template missing safety text: {needle}')
 
 fullwidth_punctuation = {chr(codepoint) for codepoint in [
     0xFF0C, 0x3002, 0xFF1B, 0xFF1A, 0xFF01, 0xFF1F, 0xFF08, 0xFF09,
