@@ -16,13 +16,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 python3 validate_marketplace.py
 ```
 
-验证当前 `project` plugin:
+验证当前 `project-spec` plugin:
 
 ```bash
-python3 plugins/project/validate_plugin.py
+python3 plugins/project-spec/validate_plugin.py
 ```
 
-在 `plugins/project/` 目录内开发时, 也可以从该目录运行 plugin validator:
+在 `plugins/project-spec/` 目录内开发时, 也可以从该目录运行 plugin validator:
 
 ```bash
 python3 validate_plugin.py
@@ -34,7 +34,7 @@ python3 validate_plugin.py
 
 - `.claude-plugin/marketplace.json` 定义 marketplace metadata, 并列出可分发 plugins.
 - `plugins/` 保存 plugin 目录. Plugin 目录名使用 kebab-case, 且必须匹配 plugin manifest 的 `name`.
-- `plugins/project/` 是当前 plugin. 它提供 `/project:*` commands, 用于在 coding 前把模糊项目想法推进为 reviewed docs 和 implementation plans.
+- `plugins/project-spec/` 是当前 plugin. 它提供 `/project-spec:*` commands, 用于在 coding 前把模糊项目想法推进为 reviewed docs 和 implementation plans.
 
 新增 plugin 时:
 
@@ -45,11 +45,11 @@ python3 validate_plugin.py
 
 Marketplace root 不能包含 `.claude-plugin/plugin.json`. 该文件只属于 plugin 目录.
 
-## `project` 架构
+## `project-spec` 架构
 
-`plugins/project/` 是声明式 Claude Code plugin. 主要部分如下:
+`plugins/project-spec/` 是声明式 Claude Code plugin. 主要部分如下:
 
-- `commands/project/*.md`: `/project:*` slash commands 和 workflow gates.
+- `commands/*.md`: `/project-spec:*` slash commands 和 workflow gates.
 - `agents/*.md`: 面向 requirements, architecture, data design, review, implementation planning 等工作的 subagent role definitions.
 - `skills/*/SKILL.md`: reusable skills, 包括通用 design skills 和 project-type skills.
 - `docs-template/`: 复制或生成到目标项目的通用 docs skeleton.
@@ -65,11 +65,11 @@ idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-froze
 重要 workflow 约束:
 
 - 不要在 spec workflow 中写 implementation code.
-- 不要跳过 `/project:review-docs` 直接 freeze V1.
-- 不要跳过 `/project:freeze-v1` 直接 plan implementation.
-- `/project:plan-implementation` 可以设置 `implementation-planned`, 但同一次 command 不得推进到 `ready-for-coding`.
-- `/project:ready-for-coding` 是 coding 前显式 readiness gate.
-- V1 freeze 后的需求变更必须走 `/project:change`.
+- 不要跳过 `/project-spec:review-docs` 直接 freeze V1.
+- 不要跳过 `/project-spec:freeze-v1` 直接 plan implementation.
+- `/project-spec:plan-implementation` 可以设置 `implementation-planned`, 但同一次 command 不得推进到 `ready-for-coding`.
+- `/project-spec:ready-for-coding` 是 coding 前显式 readiness gate.
+- V1 freeze 后的需求变更必须走 `/project-spec:change`.
 
 ## 必须保持的验证规则
 
@@ -77,15 +77,15 @@ Validators 会强制检查这些仓库约定, 修改时必须保持:
 
 - Marketplace plugin entries 必须直接指向 `plugins/` 下的目录, source 形式为 `./plugins/<name>`.
 - Plugin manifests 必须匹配目录名和 marketplace name.
-- `/project:*` command files 必须有 YAML frontmatter, 且包含 `description`, `argument-hint`, `allowed-tools`.
+- `/project-spec:*` command files 必须有 YAML frontmatter, 且包含 `description`, `argument-hint`, `allowed-tools`.
 - Plugin commands 和 agents 不得允许 unrestricted `Bash`.
 - Agent frontmatter 必须包含 `name`, `description`, `tools`, `model`, `color`.
 - 每个 skill directory 必须包含 `SKILL.md`, 且其中 `name` 匹配目录名.
 - 每个 canonical project type 必须同时拥有 skill 和 type-specific template directory.
-- `project` 的 readiness, freeze, change, implementation-planning gate text 会被刻意验证. 修改这些 command docs 时, 要当作 workflow change, 不要当作 copy edit.
+- `project-spec` 的 readiness, freeze, change, implementation-planning gate text 会被刻意验证. 修改这些 command docs 时, 要当作 workflow change, 不要当作 copy edit.
 - 文本文件不得包含全角标点或本地绝对路径泄漏.
 
-## 支持的 `project` 项目类型
+## 支持的 `project-spec` 项目类型
 
 当前 plugin 支持这些 canonical project types:
 
