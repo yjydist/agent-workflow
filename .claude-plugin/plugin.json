@@ -1,0 +1,5 @@
+{
+  "name": "agent-workflow",
+  "description": "Declarative Claude Code workflow for turning project ideas into implementation-ready specs.",
+  "author": "yjydist"
+}
