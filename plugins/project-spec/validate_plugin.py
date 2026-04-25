@@ -157,10 +157,11 @@ fullwidth_punctuation = {chr(codepoint) for codepoint in [
     0xFF02, 0xFF07, 0x300C, 0x300D, 0x300E, 0x300F,
 ]}
 local_path_patterns = [
-    '/' + 'Users' + '/',
-    '/' + 'home' + '/',
-    '/' + 'var' + '/' + 'folders' + '/',
-    'C:' + '\\' + 'Users' + '\\',
+    re.compile('/' + 'Users' + '/'),
+    re.compile('/' + 'home' + '/'),
+    re.compile('/' + 'var' + '/' + 'folders' + '/'),
+    re.compile('/' + 'private' + '/' + 'var' + '/' + 'folders' + '/'),
+    re.compile(r'[A-Za-z]:[\\/]Users[\\/]'),
 ]
 for path in ROOT.rglob('*'):
     if path.is_file() and '.git' not in path.parts:
@@ -171,7 +172,7 @@ for path in ROOT.rglob('*'):
         hits = ''.join(sorted(fullwidth_punctuation.intersection(text)))
         require(not hits, f'{path.relative_to(ROOT)} contains fullwidth punctuation: {hits}')
         for pattern in local_path_patterns:
-            require(pattern not in text, f'{path.relative_to(ROOT)} contains local absolute path pattern {pattern}')
+            require(not pattern.search(text), f'{path.relative_to(ROOT)} contains local absolute path pattern {pattern.pattern}')
 
 if errors:
     print('Plugin validation failed:')
