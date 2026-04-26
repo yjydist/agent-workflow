@@ -11,6 +11,14 @@ KEBAB_CASE = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*')
 errors: list[str] = []
 
 
+def is_git_ignored(path: Path) -> bool:
+    result = subprocess.run(
+        ['git', 'check-ignore', '-q', str(path.relative_to(ROOT))],
+        cwd=ROOT,
+    )
+    return result.returncode == 0
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         errors.append(message)
@@ -105,6 +113,8 @@ local_path_patterns = [
 ]
 for path in ROOT.rglob('*'):
     if path.is_file() and '.git' not in path.parts:
+        if is_git_ignored(path):
+            continue
         try:
             text = path.read_text()
         except UnicodeDecodeError:
