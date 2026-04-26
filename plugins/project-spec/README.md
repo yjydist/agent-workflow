@@ -116,7 +116,8 @@ idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-froze
 ## 给 coding agent 的总规则
 
 ```text
-实现代码前, 必须先阅读 docs/README.md 指定的必读文档.
+实现代码前, 必须先阅读 docs/README.md 指定的 Required Reading Order.
+docs/README.md 是 coding agent 的唯一必读入口, 不要在其他文档中维护第二套必读顺序.
 只能实现 docs/product/scope.md 中 V1 明确包含的功能.
 如果发现文档冲突, TODO, 遗漏或实现不可判定, 必须先停止并报告, 不得自行猜测.
 每次只实现 docs/delivery/implementation-plan.md 中一个 Phase.

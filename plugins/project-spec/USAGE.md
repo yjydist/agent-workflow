@@ -77,7 +77,8 @@ idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-froze
 交给 coding agent 实现时, 使用这段约束:
 
 ```text
-先阅读 docs/README.md 中的必读顺序.
+先阅读 docs/README.md 中的 Required Reading Order.
+把 docs/README.md 当作唯一必读入口, 不要自行省略 review 或 type-specific 文档.
 只实现 docs/delivery/implementation-plan.md 的当前 Phase.
 不要实现其他 Phase 或 V1 范围外功能.
 如果发现文档冲突, TODO, 遗漏或实现不可判定, 停止并报告.

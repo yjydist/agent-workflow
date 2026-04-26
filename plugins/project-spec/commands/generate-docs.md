@@ -37,9 +37,10 @@ allowed-tools: Read, Write, Edit
 1. 阅读 `docs/meta/project-context.md` 和访谈记录.
 2. 根据 `docs-template/` 生成或更新 docs.
 3. 根据项目类型生成 `docs/type-specific/<project-type>/` 文档.
-4. 所有不确定内容写为 `TODO`,并同步到 `docs/review/open-questions.md`.
-5. 更新 `docs/README.md` 当前状态为 `docs-generated`.
-6. 不生成代码.
+4. 更新 `docs/README.md` 的 `Required Reading Order`, 明确列出 `review/review-notes.md`, `review/open-questions.md`, 以及当前项目类型下的每个 `type-specific/<project-type>/*.md` 文件.
+5. 所有不确定内容写为 `TODO`, 并同步到 `docs/review/open-questions.md`.
+6. 更新 `docs/README.md` 当前状态为 `docs-generated`.
+7. 不生成代码.
 
 ## Required Output Files
 
@@ -64,6 +65,7 @@ docs/design/error-handling.md
 docs/design/security-and-permissions.md
 docs/delivery/test-plan.md
 docs/delivery/acceptance-criteria.md
+docs/review/review-notes.md
 docs/review/open-questions.md
 ```
 

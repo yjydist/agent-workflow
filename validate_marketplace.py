@@ -6,6 +6,8 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parent
+SEMVER = re.compile(r'\d+\.\d+\.\d+')
+KEBAB_CASE = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*')
 errors: list[str] = []
 
 
@@ -14,34 +16,71 @@ def require(condition: bool, message: str) -> None:
         errors.append(message)
 
 
+def require_non_empty_string(value: object, label: str) -> None:
+    require(isinstance(value, str) and value.strip() != '', f'{label} must be a non-empty string')
+
+
+def load_json(path: Path, label: str) -> dict:
+    try:
+        data = json.loads(path.read_text())
+    except json.JSONDecodeError as exc:
+        errors.append(f'{label} is not valid JSON: {exc.msg} at line {exc.lineno} column {exc.colno}')
+        return {}
+    require(isinstance(data, dict), f'{label} must contain a JSON object')
+    return data if isinstance(data, dict) else {}
+
+
 marketplace_path = ROOT / '.claude-plugin' / 'marketplace.json'
 require(marketplace_path.exists(), '.claude-plugin/marketplace.json missing')
 require(not (ROOT / '.claude-plugin' / 'plugin.json').exists(), 'marketplace root must not contain .claude-plugin/plugin.json')
 
 plugins: list[dict] = []
 if marketplace_path.exists():
-    data = json.loads(marketplace_path.read_text())
+    data = load_json(marketplace_path, '.claude-plugin/marketplace.json')
+    require_non_empty_string(data.get('name'), 'marketplace name')
     require(data.get('name') == 'agent-workflow', 'marketplace name must be agent-workflow')
-    plugins = data.get('plugins', [])
-    require(isinstance(plugins, list) and plugins, 'marketplace must list at least one plugin')
+    plugins_value = data.get('plugins', [])
+    require(isinstance(plugins_value, list) and bool(plugins_value), 'marketplace must list at least one plugin')
+    plugins = plugins_value if isinstance(plugins_value, list) else []
 
 for entry in plugins:
+    require(isinstance(entry, dict), 'marketplace plugin entries must be JSON objects')
+    if not isinstance(entry, dict):
+        continue
+
     name = entry.get('name')
     source = entry.get('source')
-    require(name, 'marketplace plugin entry missing name')
-    expected_source = f'./plugins/{name}' if name else None
+    require_non_empty_string(name, 'marketplace plugin entry name')
+    require_non_empty_string(entry.get('description'), f'{name} description')
+    require_non_empty_string(entry.get('category'), f'{name} category')
+    require_non_empty_string(source, f'{name} source')
+    if isinstance(name, str):
+        require(KEBAB_CASE.fullmatch(name) is not None, f'{name} plugin name must be kebab-case')
+
+    expected_source = f'./plugins/{name}' if isinstance(name, str) else None
     require(isinstance(source, str) and source == expected_source, f'{name} source must be exactly {expected_source}')
-    if not name or not isinstance(source, str) or source != expected_source:
+    if not isinstance(name, str) or not isinstance(source, str) or source != expected_source:
         continue
+
     plugins_root = (ROOT / 'plugins').resolve()
     plugin_dir = (ROOT / source.removeprefix('./')).resolve()
     require(plugin_dir.is_dir(), f'{name} source directory missing: {source}')
     require(plugin_dir.parent == plugins_root, f'{name} source must resolve directly under plugins/')
+
     plugin_manifest = plugin_dir / '.claude-plugin' / 'plugin.json'
     require(plugin_manifest.exists(), f'{name} missing plugin manifest')
     if plugin_manifest.exists():
-        plugin_data = json.loads(plugin_manifest.read_text())
+        plugin_data = load_json(plugin_manifest, f'{name} plugin manifest')
         require(plugin_data.get('name') == name, f'{name} plugin manifest name mismatch')
+        version = plugin_data.get('version')
+        require(isinstance(version, str) and SEMVER.fullmatch(version) is not None, f'{name} plugin version must be semver')
+        require_non_empty_string(plugin_data.get('description'), f'{name} plugin description')
+        author = plugin_data.get('author')
+        if author is not None:
+            require(isinstance(author, dict), f'{name} plugin author must be an object')
+            if isinstance(author, dict):
+                require_non_empty_string(author.get('name'), f'{name} plugin author.name')
+
     validator = plugin_dir / 'validate_plugin.py'
     require(validator.exists(), f'{name} missing validate_plugin.py')
     if validator.exists():
@@ -55,7 +94,7 @@ fullwidth_punctuation = {chr(codepoint) for codepoint in [
 ]}
 local_path_patterns = [
     re.compile('/' + 'Users' + '/'),
-    re.compile('/' + 'home' + '/'),
+    re.compile(r'(?:^|[\s\'\"`(])/' + 'home' + r'/[^/\\\s]+(?:/|$)'),
     re.compile('/' + 'var' + '/' + 'folders' + '/'),
     re.compile('/' + 'private' + '/' + 'var' + '/' + 'folders' + '/'),
     re.compile(r'[A-Za-z]:[\\/]Users[\\/]'),

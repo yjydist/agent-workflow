@@ -24,9 +24,12 @@
 - /project-spec:review-docs
 - /project-spec:freeze-v1
 - /project-spec:plan-implementation
+- /project-spec:ready-for-coding
 - /project-spec:change
 - /project-spec:status
 
 状态流转:
 idea -> classified -> interviewed -> docs-generated -> docs-reviewed -> v1-frozen -> implementation-planned -> ready-for-coding
+
+注意:/project-spec:plan-implementation 只会把状态推进到 implementation-planned. 用户审阅实现计划后, 还必须运行 /project-spec:ready-for-coding 才能进入编码阶段.
 ```

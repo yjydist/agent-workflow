@@ -13,6 +13,8 @@
 3. `requirements/functional-requirements.md`
 4. `design/domain-model.md`
 5. `design/data-design.md`
-6. `type-specific/backend/api.md`
-7. `delivery/implementation-plan.md`
-8. `delivery/acceptance-criteria.md`
+6. `review/review-notes.md`
+7. `review/open-questions.md`
+8. `type-specific/backend-api/api.md`
+9. `delivery/implementation-plan.md`
+10. `delivery/acceptance-criteria.md`

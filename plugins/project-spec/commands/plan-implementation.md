@@ -22,21 +22,14 @@ allowed-tools: Read, Write, Edit
 
 ## Required Reads
 
-优先读取 `docs/README.md` 的 Required Reading Order, 即 docs/README.md 的 Required Reading Order. 不维护一份会漂移的独立清单. 至少包含:
+优先读取 `docs/README.md` 的 Required Reading Order. 不维护一份会漂移的独立清单.
 
-- `docs/README.md`
-- `docs/product/overview.md`
-- `docs/product/scope.md`
-- `docs/requirements/functional-requirements.md`
-- `docs/requirements/non-functional-requirements.md`
-- `docs/requirements/business-rules.md`
-- `docs/design/architecture.md`
-- `docs/design/data-design.md`
-- `docs/design/interface-contracts.md`
-- `docs/design/security-and-permissions.md`
-- `docs/design/error-handling.md`
-- `docs/delivery/test-plan.md`
-- `docs/delivery/acceptance-criteria.md`
+最低要求:
+
+- `docs/README.md` 必须存在.
+- `docs/README.md` 必须列出 product, requirements, design, review, type-specific, delivery 文档.
+- 如果 `docs/README.md` 未列出 `review/review-notes.md` 或 `review/open-questions.md`, 停止并先修正文档索引.
+- 如果 `docs/README.md` 未列出当前项目类型的 `type-specific/<project-type>/` 文档, 停止并先修正文档索引.
 
 ## Preconditions
 

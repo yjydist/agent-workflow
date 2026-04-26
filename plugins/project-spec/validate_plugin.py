@@ -32,6 +32,82 @@ STATE_SEQUENCE = 'idea -> classified -> interviewed -> docs-generated -> docs-re
 errors: list[str] = []
 
 
+def text_between(text: str, start_marker: str, end_marker: str, label: str) -> str:
+    start = text.find(start_marker)
+    require(start != -1, f'{label} missing marker: {start_marker}')
+    if start == -1:
+        return ''
+    start += len(start_marker)
+    end = text.find(end_marker, start)
+    require(end != -1, f'{label} missing marker: {end_marker}')
+    if end == -1:
+        return ''
+    return text[start:end]
+
+
+def contiguous_bullet_list_after(text: str, anchor: str, label: str) -> list[str]:
+    anchor_match = re.search(re.escape(anchor), text, re.MULTILINE)
+    require(anchor_match is not None, f'{label} missing anchor: {anchor}')
+    if anchor_match is None:
+        return []
+
+    values: list[str] = []
+    started = False
+    for line in text[anchor_match.end():].splitlines():
+        match = re.match(r'\s*[-*]\s+([a-z0-9-]+)\s*$', line)
+        if match:
+            values.append(match.group(1))
+            started = True
+            continue
+        if not started and not line.strip():
+            continue
+        if started:
+            break
+        if line.strip():
+            continue
+    require(started, f'{label} missing bullet list after anchor: {anchor}')
+    return values
+
+
+def text_code_block_after(text: str, heading: str, label: str) -> str:
+    heading_match = re.search(rf'^{re.escape(heading)}\s*$', text, re.MULTILINE)
+    require(heading_match is not None, f'{label} missing heading: {heading}')
+    if heading_match is None:
+        return ''
+
+    block_match = re.search(r'^```[^\n]*\n(.*?)^```\s*$', text[heading_match.end():], re.MULTILINE | re.DOTALL)
+    require(block_match is not None, f'{label} missing fenced code block after {heading}')
+    if block_match is None:
+        return ''
+    return block_match.group(1).rstrip('\n')
+
+
+def project_type_skill_dirs() -> set[str]:
+    names: set[str] = set()
+    for skill_file in (ROOT / 'skills').glob('*/SKILL.md'):
+        if '# Project Type Skill:' in skill_file.read_text():
+            names.add(skill_file.parent.name)
+    return names
+
+
+def declared_type_specific_files(skill_path: Path) -> list[str]:
+    block = text_code_block_after(skill_path.read_text(), '## Type-specific Docs', str(skill_path.relative_to(ROOT)))
+    expected_prefix = f'docs/type-specific/{skill_path.parent.name}/'
+    files: list[str] = []
+    saw_prefix = False
+    for raw_line in block.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        if line == expected_prefix:
+            saw_prefix = True
+            continue
+        if line.endswith('.md'):
+            files.append(line)
+    require(saw_prefix, f'{skill_path.relative_to(ROOT)} must declare {expected_prefix}')
+    return files
+
+
 def frontmatter(path: Path) -> dict[str, str]:
     text = path.read_text()
     if not text.startswith('---\n'):
@@ -64,7 +140,8 @@ if manifest_path.exists():
     if author is not None:
         require(isinstance(author, dict), 'plugin author must be an object')
         if isinstance(author, dict):
-            require(isinstance(author.get('name'), str) and author.get('name'), 'plugin author.name must be set')
+            author_name = author.get('name')
+            require(isinstance(author_name, str) and bool(author_name), 'plugin author.name must be set')
 
 for rel in REQUIRED_COMMANDS:
     command_path = ROOT / 'commands' / rel
@@ -99,11 +176,32 @@ for skill_dir in sorted((ROOT / 'skills').iterdir() if (ROOT / 'skills').exists(
         require(fm.get('name') == skill_dir.name, f'{skill_file.relative_to(ROOT)} name must be {skill_dir.name}')
         require('description' in fm, f'{skill_file.relative_to(ROOT)} missing description')
 
+project_type_skills = project_type_skill_dirs()
+project_type_templates = {
+    path.name for path in (ROOT / 'type-specific-templates').iterdir()
+    if path.is_dir()
+}
+
+require(project_type_skills == set(PROJECT_TYPES), f'project type skills must exactly match PROJECT_TYPES: {sorted(project_type_skills)} vs {PROJECT_TYPES}')
+require(project_type_templates == set(PROJECT_TYPES), f'project type template dirs must exactly match PROJECT_TYPES: {sorted(project_type_templates)} vs {PROJECT_TYPES}')
+
 for project_type in PROJECT_TYPES:
-    require((ROOT / 'skills' / project_type / 'SKILL.md').exists(), f'skill missing for {project_type}')
-    require((ROOT / 'type-specific-templates' / project_type).is_dir(), f'template dir missing for {project_type}')
-    skill_text = (ROOT / 'skills' / project_type / 'SKILL.md').read_text()
+    skill_path = ROOT / 'skills' / project_type / 'SKILL.md'
+    template_dir = ROOT / 'type-specific-templates' / project_type
+    require(skill_path.exists(), f'skill missing for {project_type}')
+    require(template_dir.is_dir(), f'template dir missing for {project_type}')
+    if not skill_path.exists() or not template_dir.is_dir():
+        continue
+
+    skill_text = skill_path.read_text()
     require(f'docs/type-specific/{project_type}/' in skill_text, f'{project_type} skill must use canonical docs/type-specific/{project_type}/ path')
+
+    declared_files = set(declared_type_specific_files(skill_path))
+    actual_files = {path.name for path in template_dir.glob('*.md')}
+    missing_files = sorted(declared_files - actual_files)
+    extra_files = sorted(actual_files - declared_files)
+    require(not missing_files, f'{project_type} template files missing: {missing_files}')
+    require(not extra_files, f'{project_type} template files not declared in skill: {extra_files}')
 
 readme = ROOT / 'docs-template' / 'README.md'
 if readme.exists():
@@ -130,7 +228,7 @@ if plan_command.exists():
     require('implementation-planned' in text, 'project plan command must mention implementation-planned')
     require('ready-for-coding' in text, 'project plan command must mention ready-for-coding')
     require('不要在同一次执行中更新为 `ready-for-coding`' in text, 'project plan command must not auto-advance to ready-for-coding')
-    for needle in ['## Preconditions', '`v1-frozen`', 'V1 status', 'blocking TODO', 'blocking open question', 'docs/README.md 的 Required Reading Order']:
+    for needle in ['## Preconditions', '`v1-frozen`', 'V1 status', 'blocking TODO', 'blocking open question', '`docs/README.md` 的 Required Reading Order']:
         require(needle in text, f'project plan command missing gate text: {needle}')
 
 ready_command = ROOT / 'commands' / 'ready-for-coding.md'
@@ -150,6 +248,34 @@ if change_command.exists():
     for needle in ['Impact analysis', 'Apply change', '用户确认', 'impacted docs', 'implementation-plan.md', 'acceptance-criteria.md']:
         require(needle in text, f'project change command missing change workflow text: {needle}')
 
+starter_prompt = ROOT / 'STARTER_PROMPT.md'
+if starter_prompt.exists():
+    text = starter_prompt.read_text()
+    require('/project-spec:ready-for-coding' in text, 'STARTER_PROMPT.md must list /project-spec:ready-for-coding')
+    require('implementation-planned' in text, 'STARTER_PROMPT.md must mention implementation-planned')
+    require('才能进入编码阶段' in text, 'STARTER_PROMPT.md must explain that plan-implementation does not directly enter coding')
+
+if readme.exists():
+    text = readme.read_text()
+    require('review/review-notes.md' in text, 'docs-template/README.md must list review/review-notes.md')
+    require('review/open-questions.md' in text, 'docs-template/README.md must list review/open-questions.md')
+    require('type-specific/<project-type>/' in text, 'docs-template/README.md must include the type-specific docs placeholder path')
+
+plugin_readme = ROOT / 'README.md'
+if plugin_readme.exists():
+    listed_types = contiguous_bullet_list_after(plugin_readme.read_text(), '适用项目类型包括', 'plugins/project-spec/README.md project type list')
+    require(listed_types == PROJECT_TYPES, f'plugins/project-spec/README.md project type list must match PROJECT_TYPES: {listed_types}')
+
+new_command = ROOT / 'commands' / 'new.md'
+if new_command.exists():
+    listed_types = contiguous_bullet_list_after(new_command.read_text(), '2. 判断项目形态,可以多选', 'commands/new.md project type list')
+    require(listed_types == PROJECT_TYPES, f'commands/new.md project type list must match PROJECT_TYPES: {listed_types}')
+
+if change_command.exists():
+    text = change_command.read_text()
+    for needle in ['`ready-for-coding` 失效', '重新运行 `/project-spec:review-docs`', '`/project-spec:freeze-v1`', '`/project-spec:plan-implementation`', '`/project-spec:ready-for-coding`']:
+        require(needle in text, f'project change command missing invalidation text: {needle}')
+
 ai_safety = ROOT / 'type-specific-templates' / 'ai-agent' / 'safety-boundaries.md'
 require(ai_safety.exists(), 'ai-agent safety-boundaries template missing')
 if ai_safety.exists():
@@ -164,7 +290,7 @@ fullwidth_punctuation = {chr(codepoint) for codepoint in [
 ]}
 local_path_patterns = [
     re.compile('/' + 'Users' + '/'),
-    re.compile('/' + 'home' + '/'),
+    re.compile(r'(?:^|[\s\'\"`(])/' + 'home' + r'/[^/\\\s]+(?:/|$)'),
     re.compile('/' + 'var' + '/' + 'folders' + '/'),
     re.compile('/' + 'private' + '/' + 'var' + '/' + 'folders' + '/'),
     re.compile(r'[A-Za-z]:[\\/]Users[\\/]'),
