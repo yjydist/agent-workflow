@@ -42,6 +42,10 @@ if marketplace_path.exists():
     plugins_value = data.get('plugins', [])
     require(isinstance(plugins_value, list) and bool(plugins_value), 'marketplace must list at least one plugin')
     plugins = plugins_value if isinstance(plugins_value, list) else []
+    require(
+        any(isinstance(plugin, dict) and plugin.get('name') == 'software-design-workflow' for plugin in plugins),
+        'marketplace must include software-design-workflow during migration',
+    )
 
 for entry in plugins:
     require(isinstance(entry, dict), 'marketplace plugin entries must be JSON objects')

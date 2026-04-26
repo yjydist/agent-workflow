@@ -8,7 +8,7 @@
 agent-workflow/
   .claude-plugin/marketplace.json
   plugins/
-    project-spec/
+    software-design-workflow/
       .claude-plugin/plugin.json
       commands/
       agents/
@@ -19,7 +19,7 @@ agent-workflow/
 
 | Plugin | Purpose | Commands |
 | --- | --- | --- |
-| `project-spec` | 把模糊项目想法整理成 reviewed docs 和 implementation plan | `/project-spec:*` |
+| `software-design-workflow` | 把模糊方向整理成 handoff-ready software design package | `/sdw:*` |
 
 ## 安装 marketplace
 
@@ -27,20 +27,24 @@ agent-workflow/
 
 ```text
 /plugin marketplace add /absolute/path/to/agent-workflow
-/plugin install project-spec@agent-workflow
+/plugin install software-design-workflow@agent-workflow
 /reload-plugins
 ```
 
 安装后在目标项目运行:
 
 ```text
-/project-spec:new
-/project-spec:interview
-/project-spec:generate-docs
-/project-spec:review-docs
-/project-spec:freeze-v1
-/project-spec:plan-implementation
-/project-spec:ready-for-coding
+/sdw:start "your vague software idea"
+/sdw:classify
+/sdw:discover
+/sdw:model
+/sdw:design
+/sdw:quality
+/sdw:target "current target slice"
+/sdw:freeze-target
+/sdw:plan
+/sdw:review
+/sdw:handoff
 ```
 
 ## 验证
@@ -54,7 +58,7 @@ python3 validate_marketplace.py
 验证单个插件:
 
 ```bash
-python3 plugins/project-spec/validate_plugin.py
+python3 plugins/software-design-workflow/validate_plugin.py
 ```
 
 ## 新增插件约定

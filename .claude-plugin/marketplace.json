@@ -7,10 +7,10 @@
   },
   "plugins": [
     {
-      "name": "project-spec",
-      "description": "Spec-first project workflow for turning ideas into reviewed docs and implementation plans.",
+      "name": "software-design-workflow",
+      "description": "General software design workflow for turning vague directions into handoff-ready design packages.",
       "category": "development",
-      "source": "./plugins/project-spec"
+      "source": "./plugins/software-design-workflow"
     }
   ]
 }
