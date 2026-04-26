@@ -6,7 +6,7 @@
 
 | Plugin | Description |
 | --- | --- |
-| `project-spec` | Spec-first project workflow, 提供 `/project-spec:*` commands, agents, skills 和 docs templates. |
+| `software-design-workflow` | Adapter-first software design workflow, 提供 `/sdw:*` commands, agents, skills 和 docs templates. |
 
 ## 命名约定
 
