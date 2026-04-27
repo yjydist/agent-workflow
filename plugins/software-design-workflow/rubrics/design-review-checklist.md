@@ -1,23 +1,24 @@
-# Software design review checklist
+# Design Review Checklist
 
-Use this checklist during `/sdw:review` and before `/sdw:handoff`.
+Use this checklist before declaring a package handoff-ready.
 
-## Consistency
+## Scope
 
-- Project vision, scope, current target, and requirements describe the same product boundary.
-- Analysis docs do not contradict design docs.
-- Quality requirements are testable and linked to current target risks.
-- Deferred work is listed outside the frozen current target.
+- Current target is explicit and frozen.
+- Included, excluded, and deferred work are clear.
+- Requirements map to acceptance checks.
+- The plan does not include out-of-scope work.
 
-## Completeness
+## Design
 
-- Required long-lived docs exist under `docs/project`, `docs/analysis`, `docs/design`, and `docs/quality`.
-- Required current-target docs exist under `docs/releases/current-target` or the concrete target directory.
-- Required handoff docs exist under `docs/handoff`.
-- `docs/handoff/agent-entry.md` includes required reading order, non-overridable decisions, and allowed next actions.
+- Adapter classification matches architecture decisions.
+- Interfaces, state, and data ownership use consistent vocabulary.
+- Error handling, permissions, and operational behavior are addressed.
+- Risks have mitigations, validation, or stop conditions.
 
-## Safety
+## Handoff
 
-- No implementation code is started by the design workflow itself.
-- Agent instructions do not grant unrestricted shell access.
-- Security, privacy, data retention, and operational failure modes are explicit where relevant.
+- `docs/handoff/agent-entry.md` exists when durable docs are used.
+- Required reading order is clear.
+- Allowed next actions and stop conditions are explicit.
+- No blocking open question remains hidden.

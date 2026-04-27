@@ -36,9 +36,9 @@
 | --- | --- | --- | --- |
 | TODO | TODO | TODO | TODO |
 
-## Optional legacy compatibility labels
+## Classification notes
 
-Use this section only for migration, search, or backward-compatible reporting. Legacy labels must not replace adapter selection.
+Use this section for decisions that explain why an adapter was included or excluded.
 
 | Label | Reason to keep | Limits of label |
 | --- | --- | --- |

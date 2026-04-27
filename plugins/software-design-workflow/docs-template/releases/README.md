@@ -15,4 +15,4 @@ After replacement, update links in handoff docs and active planning notes to poi
 
 ## Target directory contents
 
-Each target should include scope baseline, requirements, constraints, questions, risks, milestones, implementation plan, task breakdown, review notes, and change log.
+Each target should include scope baseline, requirements, risks, implementation plan, review notes, and change log.

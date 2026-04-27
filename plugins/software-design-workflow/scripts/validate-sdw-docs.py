@@ -7,33 +7,21 @@ REQUIRED_LONG_LIVED_DOCS = [
     'project/vision.md',
     'project/scope.md',
     'project/project-context.md',
-    'project/glossary.md',
     'analysis/project-classification.md',
     'analysis/domain-model.md',
     'analysis/workflows.md',
-    'analysis/state-model.md',
-    'analysis/information-model.md',
-    'design/solution-strategy.md',
     'design/architecture.md',
-    'design/components.md',
     'design/interfaces.md',
     'design/data-and-state.md',
-    'design/deployment-runtime.md',
     'quality/quality-attributes.md',
     'quality/validation-strategy.md',
-    'quality/security-privacy.md',
-    'quality/observability-operability.md',
 ]
 
 REQUIRED_CURRENT_TARGET_DOCS = [
     'scope-baseline.md',
     'requirements.md',
-    'constraints.md',
-    'milestones.md',
     'implementation-plan.md',
-    'task-breakdown.md',
     'risks.md',
-    'open-questions.md',
     'review-notes.md',
     'change-log.md',
 ]
@@ -41,7 +29,6 @@ REQUIRED_CURRENT_TARGET_DOCS = [
 REQUIRED_HANDOFF_DOCS = [
     'handoff/agent-entry.md',
     'handoff/execution-brief.md',
-    'handoff/openspec-handoff.md',
 ]
 
 MIN_NON_EMPTY_CHARS = 20

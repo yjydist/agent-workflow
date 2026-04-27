@@ -1,16 +1,14 @@
 # Plugins
 
-该目录保存 `agent-workflow` 个人 marketplace 中的所有 Claude Code plugins.
-
-## 当前插件
+This directory contains local Codex plugins published by the `agent-workflow` marketplace.
 
 | Plugin | Description |
 | --- | --- |
-| `software-design-workflow` | Adapter-first software design workflow, 提供 `/sdw:*` commands, agents, skills 和 docs templates. |
+| `software-design-workflow` | Compact skill pack for software design, scope control, and handoff readiness. |
 
-## 命名约定
+## Conventions
 
-- 插件目录使用 kebab-case.
-- 插件目录名必须和 `.claude-plugin/plugin.json` 的 `name` 一致.
-- 每个插件尽量自带 `README.md` 和 `validate_plugin.py`.
-- 新增插件后, 必须更新根目录 `.claude-plugin/marketplace.json`.
+- Plugin directory names must match `.codex-plugin/plugin.json` `name`.
+- Marketplace entries live in `.agents/plugins/marketplace.json`.
+- Local plugin entries use `source.source: "local"` and `source.path: "./plugins/<plugin-name>"`.
+- Keep plugin surfaces small. Prefer a focused skill over command, agent, example, or compatibility layers.

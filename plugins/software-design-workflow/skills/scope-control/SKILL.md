@@ -1,25 +1,75 @@
 ---
 name: scope-control
-description: Use when trimming V1 scope, identifying out-of-scope work, and preventing feature creep.
+description: Use when selecting the current target, freezing scope, processing scope changes, or preventing feature creep.
 ---
 
-# Skill: Scope Control
+# Scope Control
 
 ## Goal
 
-把项目压缩成适合 V1 的最小闭环.
+Keep the active target small, explicit, and stable enough to plan and hand off. This skill can be used inside the main software design workflow or independently when a project is drifting.
 
-## Checklist
+## Current Target Checklist
 
-- V1 是否只有一个主要目标?
-- 是否存在没有必要的高级技术?
-- 是否存在多人协作,复杂权限,实时通知,支付,复杂部署等膨胀点?
-- 是否能在 1-4 周内个人完成?
-- 是否每个 V1 功能都有明确验收标准?
+- Does the target have one primary outcome?
+- Can the target be implemented and validated independently?
+- Are included capabilities, excluded capabilities, and deferred ideas all explicit?
+- Does every included capability have acceptance criteria?
+- Are expensive additions justified by the target itself?
+- Are assumptions and dependencies named?
 
-## Decision Categories
+## Scope Record
 
-```md
+Use this structure:
+
+```markdown
+## Current Target
+
+## Included
+
+## Explicitly Out of Scope
+
+## Deferred
+
+## Assumptions
+
+## Acceptance Boundaries
+
+## Change Control
+```
+
+## Default Trims
+
+Cut these unless they are central to the target:
+
+- Microservices.
+- Kubernetes.
+- Complex role-based access control.
+- Multi-tenant administration.
+- Payments.
+- Real-time collaboration.
+- Large-scale concurrency.
+- Complex observability stacks.
+- Heavy customization systems.
+
+## Freeze Rules
+
+- Freeze scope before writing the implementation plan.
+- After freeze, do not silently add requirements.
+- If a requested change affects frozen scope, mark the current plan, review, or handoff notes stale.
+- Re-run the earliest impacted design step before declaring the package handoff-ready again.
+
+## Change Triage
+
+```markdown
+## Change Request
+
+## Affected Docs
+
+## Scope Impact
+
+## Decision
+
 ## V1 Must Have
 
 ## V1 Explicitly Out of Scope
@@ -30,18 +80,3 @@ description: Use when trimming V1 scope, identifying out-of-scope work, and prev
 
 ## Rationale
 ```
-
-## Student Project Defaults
-
-默认不做:
-
-- 微服务
-- Kubernetes
-- 复杂 RBAC
-- 多租户
-- 支付
-- 实时协作
-- 大规模高并发
-- 复杂监控体系
-
-除非用户明确表示项目目标就是练这些.
