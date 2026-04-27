@@ -1,23 +1,9 @@
-# Software design workflow anti-patterns
+# Anti-Patterns
 
-Avoid these patterns when using or maintaining `software-design-workflow`.
-
-## Workflow anti-patterns
-
-- Skipping discovery and modeling, then treating architecture guesses as requirements.
-- Advancing to `handoff-ready` while blocking open questions remain.
-- Treating `planned` as permission to start coding without review and handoff checks.
-- Hiding scope changes in implementation notes instead of using `/sdw:change`.
-
-## Documentation anti-patterns
-
-- Duplicating conflicting requirements across project, target, and handoff docs.
-- Leaving template placeholders that look like real decisions.
-- Making `agent-entry.md` a summary only, instead of a safe entry point with required reading order.
-- Recording decisions without rationale, tradeoffs, or validation implications.
-
-## Tooling anti-patterns
-
-- Allowing unrestricted `Bash` in command or agent tool declarations.
-- Making validators depend on network access, timestamps, or generated examples.
-- Validating prose style instead of stable structure and required workflow gates.
+- Starting implementation before intent, scope, and constraints are explicit.
+- Expanding the current target without marking downstream plans stale.
+- Treating handoff-ready as permission to code.
+- Hiding open questions inside implementation notes.
+- Adding compatibility layers before a current target needs them.
+- Creating many narrow process files where one focused skill would do.
+- Making `agent-entry.md` a summary only instead of an execution entry point with required reading order.

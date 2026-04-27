@@ -1,70 +1,64 @@
 # Agent Workflow Marketplace
 
-这是我的个人 Claude Code marketplace, 用来集中存放可复用的 commands, agents, skills 和 workflow plugins.
+Personal Codex marketplace for reusable workflow plugins.
 
-## Marketplace 结构
+## Structure
 
 ```text
 agent-workflow/
-  .claude-plugin/marketplace.json
+  .agents/plugins/marketplace.json
   plugins/
     software-design-workflow/
-      .claude-plugin/plugin.json
-      commands/
-      agents/
+      .codex-plugin/plugin.json
       skills/
+      docs-template/
+      scripts/
 ```
 
-## 当前插件
+## Plugin
 
-| Plugin | Purpose | Commands |
+| Plugin | Purpose | Surface |
 | --- | --- | --- |
-| `software-design-workflow` | 把模糊方向整理成 handoff-ready software design package | `/sdw:*` |
+| `software-design-workflow` | Turn vague software ideas into scoped design and handoff packages. | Codex skills |
 
-## 安装 marketplace
+## Install Shape
 
-在 Claude Code 中添加本地 marketplace:
-
-```text
-/plugin marketplace add /absolute/path/to/agent-workflow
-/plugin install software-design-workflow@agent-workflow
-/reload-plugins
-```
-
-安装后在目标项目运行:
+Codex marketplace metadata lives at:
 
 ```text
-/sdw:start "your vague software idea"
-/sdw:classify
-/sdw:discover
-/sdw:model
-/sdw:design
-/sdw:quality
-/sdw:target "current target slice"
-/sdw:freeze-target
-/sdw:plan
-/sdw:review
-/sdw:handoff
+.agents/plugins/marketplace.json
 ```
 
-## 验证
+The marketplace entry points to:
 
-验证整个 marketplace:
+```text
+./plugins/software-design-workflow
+```
+
+The plugin manifest lives at:
+
+```text
+plugins/software-design-workflow/.codex-plugin/plugin.json
+```
+
+## Validate
+
+Validate the marketplace:
 
 ```bash
 python3 validate_marketplace.py
 ```
 
-验证单个插件:
+Validate the plugin:
 
 ```bash
 python3 plugins/software-design-workflow/validate_plugin.py
 ```
 
-## 新增插件约定
+## Add a Plugin
 
-1. 在 `plugins/<plugin-name>/` 下创建插件.
-2. 插件必须包含 `.claude-plugin/plugin.json`.
-3. 插件资源放在 `commands/`, `agents/`, `skills/` 等标准目录.
-4. 在 `.claude-plugin/marketplace.json` 的 `plugins` 数组追加条目.
-5. 如果插件有自定义规则, 提供 `validate_plugin.py`.
+1. Create `plugins/<plugin-name>/`.
+2. Add `.codex-plugin/plugin.json`.
+3. Add skills or other Codex plugin resources.
+4. Add an entry to `.agents/plugins/marketplace.json`.
+5. Add a plugin validator if the plugin has custom rules.

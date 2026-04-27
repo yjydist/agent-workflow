@@ -1,25 +1,47 @@
-# Adapter system
+# Adapter Index
 
-The adapter system helps projects describe their real shape without forcing them into a single fixed project-type label. Instead of picking one category and stretching it to fit, projects combine adapters across multiple layers to capture what the software is, how it is used, where it runs, which domain language matters, and which cross-cutting concerns must guide the design.
+Adapters are short classification prompts used by the `software-design-workflow` skill. Pick only the adapters that change design decisions.
 
-## Adapter layers
+## Kinds
 
-The adapter system is organized into five layers:
+- `application`: user-facing product with workflows and UI or interaction state.
+- `service`: long-running backend or API with operational behavior.
+- `library-sdk`: reusable API consumed by other code.
+- `tooling`: developer or operator tool with commands, files, or automation.
+- `knowledge-system`: retrieval, documents, notes, search, or knowledge workflows.
+- `agent-system`: model-driven loop, tools, memory, autonomy, or prompt contracts.
+- `platform-infra`: shared infrastructure, deployment, provisioning, or governance layer.
+- `data-ml-system`: data ingestion, transformation, training, evaluation, or analytics.
+- `language-compiler`: parser, interpreter, compiler, linter, or code transformation.
+- `embedded-system`: software constrained by device hardware or firmware lifecycle.
+- `interactive-media`: game, simulation, creative tool, or highly interactive experience.
 
-- kinds
-- surfaces
-- runtimes
-- domains
-- concerns
+## Surfaces
 
-Projects usually use combinations of adapters across these layers. For example, one project might combine a service kind, an HTTP API surface, a cloud platform runtime, a developer tools domain, and strong observability concerns. Another project may use a library SDK kind, a CLI surface, a local machine runtime, and compatibility concerns. The goal is to describe the project as a composition of traits, not to force it under one fixed label.
+- `web-ui`, `desktop-ui`, `mobile-ui`, `cli`, `tui`.
+- `http-api`, `library-api`, `agent-tools`.
+- `file-format`, `event-stream`, `ipc`, `background-jobs`.
 
-## Layer indexes
+## Runtimes
 
-Use the layer indexes below to browse available adapters:
+- `browser`, `server`, `local-machine`, `mobile-device`.
+- `embedded-device`, `cloud-platform`, `offline-first`, `edge-runtime`.
 
-- [Kinds](./kinds/index.md)
-- [Surfaces](./surfaces/index.md)
-- [Runtimes](./runtimes/index.md)
-- [Domains](./domains/index.md)
-- [Concerns](./concerns/index.md)
+## Domains
+
+- `developer-tools`.
+- `knowledge-management`.
+- `education-learning`.
+
+## Concerns
+
+- `security-privacy`.
+- `offline-sync`.
+- `observability`.
+- `compatibility`.
+- `performance`.
+- `ai-safety`.
+
+## Use
+
+Record the selected adapter set before design work starts. Revisit the set when the target changes enough to affect architecture, validation, or handoff.

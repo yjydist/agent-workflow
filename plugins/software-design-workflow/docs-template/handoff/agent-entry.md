@@ -23,8 +23,8 @@
 3. `docs/project/project-context.md`
 4. `<resolved-target-docs-path>/scope-baseline.md`
 5. `<resolved-target-docs-path>/requirements.md`
-6. `<resolved-target-docs-path>/open-questions.md`
-7. `<resolved-target-docs-path>/risks.md`
+6. `<resolved-target-docs-path>/risks.md`
+7. `<resolved-target-docs-path>/review-notes.md`
 8. Relevant `docs/analysis/`, `docs/design/`, and `docs/quality/` files for the assigned task.
 
 ## Long-lived docs vs target docs

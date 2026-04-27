@@ -1,0 +1,33 @@
+{
+  "name": "software-design-workflow",
+  "version": "3.0.0",
+  "description": "Codex skills for turning vague software ideas into scoped design and handoff packages.",
+  "author": {
+    "name": "yjydist"
+  },
+  "license": "MIT",
+  "keywords": [
+    "software-design",
+    "planning",
+    "handoff",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Software Design Workflow",
+    "shortDescription": "Scope, design, plan, and hand off software work.",
+    "longDescription": "A compact Codex skill pack for converting vague software directions into scoped design packages with quality checks and implementation handoff guidance.",
+    "developerName": "yjydist",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Review"
+    ],
+    "defaultPrompt": [
+      "Turn this product idea into a scoped design.",
+      "Review this design package for handoff readiness.",
+      "Help freeze the current target for implementation."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

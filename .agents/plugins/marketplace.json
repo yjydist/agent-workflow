@@ -1,0 +1,20 @@
+{
+  "name": "agent-workflow",
+  "interface": {
+    "displayName": "Agent Workflow"
+  },
+  "plugins": [
+    {
+      "name": "software-design-workflow",
+      "source": {
+        "source": "local",
+        "path": "./plugins/software-design-workflow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
