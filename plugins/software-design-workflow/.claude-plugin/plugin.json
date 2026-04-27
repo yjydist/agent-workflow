@@ -1,0 +1,8 @@
+{
+  "name": "software-design-workflow",
+  "version": "2.0.0",
+  "description": "General software design workflow for turning vague directions into handoff-ready design packages.",
+  "author": {
+    "name": "yjydist"
+  }
+}
